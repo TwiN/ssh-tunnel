@@ -1,7 +1,6 @@
 package org.twinnation.sshtunnel;
 
 import java.util.Properties;
-import java.util.regex.Pattern;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
