@@ -19,21 +19,23 @@ public class TunnelConfiguration {
 	private int localPort;
 	
 	
-	public TunnelConfiguration(String serverIp, String sshUsername, File sshPrivateKey, int serverPort, int localPort) {
+	private TunnelConfiguration(String serverIp, String sshUsername, String sshPassword, File sshPrivateKey, int serverPort, int localPort) {
 		this.serverIp = serverIp;
 		this.sshUsername = sshUsername;
+		this.sshPassword = sshPassword;
 		this.sshPrivateKey = sshPrivateKey;
 		this.serverPort = serverPort;
 		this.localPort = localPort;
 	}
 	
 	
+	public TunnelConfiguration(String serverIp, String sshUsername, File sshPrivateKey, int serverPort, int localPort) {
+		this(serverIp, sshUsername, null, sshPrivateKey, serverPort, localPort);
+	}
+	
+	
 	public TunnelConfiguration(String serverIp, String sshUsername, String sshPassword, int serverPort, int localPort) {
-		this.serverIp = serverIp;
-		this.sshUsername = sshUsername;
-		this.sshPassword = sshPassword;
-		this.serverPort = serverPort;
-		this.localPort = localPort;
+		this(serverIp, sshUsername, sshPassword, null, serverPort, localPort);
 	}
 	
 	
@@ -66,6 +68,9 @@ public class TunnelConfiguration {
 	
 	
 	public void setSshPassword(String sshPassword) {
+		if (sshPrivateKey != null) {
+			sshPrivateKey = null;
+		}
 		this.sshPassword = sshPassword;
 	}
 	
@@ -76,6 +81,9 @@ public class TunnelConfiguration {
 	
 	
 	public void setSshPrivateKey(File sshPrivateKey) {
+		if (sshPassword != null) {
+			sshPassword = null;
+		}
 		this.sshPrivateKey = sshPrivateKey;
 	}
 	
