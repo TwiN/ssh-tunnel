@@ -25,12 +25,11 @@ public class SSHTunnelHandler {
 					  config.getServerIp(), "localhost", config.getLocalPort(), config.getServerPort());
 			}
 		} catch (JSchException e) {
-			e.printStackTrace();
 			System.out.println("Failed to create SSH tunnel, disconnecting now");
+			e.printStackTrace();
 			if (currentSession.isConnected()) {
 				currentSession.disconnect();
 			}
-			System.exit(1);
 		}
 	}
 	
