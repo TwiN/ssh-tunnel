@@ -1,6 +1,5 @@
 package org.twinnation.sshtunnel;
 
-import java.sql.*;
 import java.util.Properties;
 
 import com.jcraft.jsch.JSch;
@@ -12,40 +11,10 @@ public class SSHTunnelHandler {
 	
 	private static Session currentSession = null;
 	
-
-	private static Session doSSHTunnelByPassword(String sshUser, String sshPassword, String sshHost, 
-		  String remoteHost, int localPort, int remotePort) throws JSchException {
-		final JSch jsch = new JSch();
-		Session session = jsch.getSession(sshUser, sshHost, 22);
-		session.setPassword(sshPassword);
-
-		final Properties config = new Properties();
-		config.put("StrictHostKeyChecking", "no");
-		session.setConfig(config);
-
-		session.connect();
-		session.setPortForwardingL(localPort, remoteHost, remotePort);
-		return session;
-	}
 	
-	
-	private static Session doSSHTunnelByKey(String sshUser, String sshKeyPath, String sshHost,
-		  String remoteHost, int localPort, int remotePort) throws JSchException {
-		final JSch jsch = new JSch();
-		Session session = jsch.getSession(sshUser, sshHost, 22);
-		jsch.addIdentity(sshKeyPath);
-
-		final Properties config = new Properties();
-		config.put("StrictHostKeyChecking", "no");
-		session.setConfig(config);
-
-		session.connect();
-		session.setPortForwardingL(localPort, remoteHost, remotePort);
-		return session;
-		
-	}
-	
-	
+	/**
+	 * Creates the SSH tunnel with the TunnelConfiguration provided
+	 */
 	public static void createSSHTunnel(TunnelConfiguration config) {
 		try {
 			if (config.isUsingPassword()) {
@@ -66,8 +35,45 @@ public class SSHTunnelHandler {
 	}
 	
 	
+	/**
+	 * Closes the SSH tunnel
+	 */
 	public static void closeSSHTunnel() {
 		currentSession.disconnect();
+	}
+	
+	
+	/**
+	 * Creates the SSH tunnel by using a password
+	 */
+	private static Session doSSHTunnelByPassword(String sshUser, String sshPassword, String sshHost, String remoteHost,
+		  int localPort, int remotePort) throws JSchException {
+		final JSch jsch = new JSch();
+		Session session = jsch.getSession(sshUser, sshHost, 22);
+		session.setPassword(sshPassword);
+		final Properties config = new Properties();
+		config.put("StrictHostKeyChecking", "no");
+		session.setConfig(config);
+		session.connect();
+		session.setPortForwardingL(localPort, remoteHost, remotePort);
+		return session;
+	}
+	
+	
+	/**
+	 * Creates the SSH tunnel by using a SSH private key
+	 */
+	private static Session doSSHTunnelByKey(String sshUser, String sshKeyPath, String sshHost, String remoteHost,
+		  int localPort, int remotePort) throws JSchException {
+		final JSch jsch = new JSch();
+		Session session = jsch.getSession(sshUser, sshHost, 22);
+		jsch.addIdentity(sshKeyPath);
+		final Properties config = new Properties();
+		config.put("StrictHostKeyChecking", "no");
+		session.setConfig(config);
+		session.connect();
+		session.setPortForwardingL(localPort, remoteHost, remotePort);
+		return session;
 	}
 	
 }
