@@ -23,7 +23,11 @@ public class Example {
 		String dbUrl = "jdbc:mysql://localhost:3366/" + "DATABASE_NAME_HERE" + "?useSSL=false";
 		
 		// Connect to server over SSH
-		SSHTunnelHandler.createSSHTunnel(config);
+		try {
+			SSHTunnelHandler.createSSHTunnel(config);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		
 		// Connect to DB and execute request
 		Connection connection = null;

@@ -1,6 +1,7 @@
 package org.twinnation.sshtunnel;
 
 import java.util.Properties;
+import java.util.regex.Pattern;
 
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
@@ -15,8 +16,11 @@ public class SSHTunnelHandler {
 	/**
 	 * Creates the SSH tunnel with the TunnelConfiguration provided
 	 */
-	public static void createSSHTunnel(TunnelConfiguration config) {
+	public static void createSSHTunnel(TunnelConfiguration config) throws Exception {
 		try {
+			if (!config.isValid()) {
+				throw new Exception("Invalid tunnel configuration");
+			}
 			if (config.isUsingPassword()) {
 				currentSession = doSSHTunnelByPassword(config.getSshUsername(), config.getSshPassword(),
 					  config.getServerIp(), "localhost", config.getLocalPort(), config.getServerPort());

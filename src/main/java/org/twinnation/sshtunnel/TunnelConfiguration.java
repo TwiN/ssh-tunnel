@@ -42,31 +42,50 @@ public class TunnelConfiguration {
 	public TunnelConfiguration() {}
 	
 	
+	/**
+	 * Gets the server ip
+	 */
 	public String getServerIp() {
 		return serverIp;
 	}
 	
 	
+	/**
+	 * Sets the server ip
+	 */
 	public void setServerIp(String serverIp) {
 		this.serverIp = serverIp;
 	}
 	
 	
+	/**
+	 * Gets the username of the SSH user
+	 */
 	public String getSshUsername() {
 		return sshUsername;
 	}
 	
 	
+	/**
+	 * Sets the username of the SSH user
+	 */
 	public void setSshUsername(String sshUsername) {
 		this.sshUsername = sshUsername;
 	}
 	
 	
+	/**
+	 * Gets the SSH user password
+	 */
 	public String getSshPassword() {
 		return sshPassword;
 	}
 	
 	
+	/**
+	 * Sets the SSH user password
+	 * Note: This will automatically set sshPrivateKey to null
+	 */
 	public void setSshPassword(String sshPassword) {
 		if (sshPrivateKey != null) {
 			sshPrivateKey = null;
@@ -75,11 +94,18 @@ public class TunnelConfiguration {
 	}
 	
 	
+	/**
+	 * Gets the ssh user private key file
+	 */
 	public File getSshPrivateKey() {
 		return sshPrivateKey;
 	}
 	
 	
+	/**
+	 * Sets the ssh user private key file
+	 * Note: This will automatically set sshPassword to null
+	 */
 	public void setSshPrivateKey(File sshPrivateKey) {
 		if (sshPassword != null) {
 			sshPassword = null;
@@ -88,28 +114,49 @@ public class TunnelConfiguration {
 	}
 	
 	
+	/**
+	 * Gets the port of the server you're connecting the tunnel to
+	 */
 	public int getServerPort() {
 		return serverPort;
 	}
 	
 	
+	/**
+	 * Sets the port of the server you're connecting the tunnel to
+	 */
 	public void setServerPort(int serverPort) {
 		this.serverPort = serverPort;
 	}
 	
 	
+	/**
+	 * Gets the port you will locally connect to in order to access the server
+	 */
 	public int getLocalPort() {
 		return localPort;
 	}
 	
 	
+	/**
+	 * Sets the port you will locally connect to in order to access the server
+	 */
 	public void setLocalPort(int localPort) {
 		this.localPort = localPort;
 	}
 	
 	
+	/**
+	 * Whether the TunnelConfiguration is using a password as method of authentication
+	 */
 	public boolean isUsingPassword() {
 		return (sshPassword != null);
+	}
+	
+	
+	public boolean isValid() {
+		return serverIp != null && sshUsername != null && (sshPassword != null || sshPrivateKey != null)
+			  && serverPort != 0 && localPort != 0;
 	}
 	
 }
